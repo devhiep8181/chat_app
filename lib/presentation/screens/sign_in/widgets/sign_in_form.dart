@@ -1,15 +1,17 @@
-import 'package:chat_app/core/configs/app_cache.dart';
 import 'package:chat_app/core/configs/app_router.dart';
 import 'package:chat_app/core/utils/app_color.dart';
 import 'package:chat_app/core/utils/app_constants.dart';
 import 'package:chat_app/core/utils/primary_font.dart';
 import 'package:chat_app/core/utils/validator.dart';
+import 'package:chat_app/presentation/bloc/blocs.dart';
 import 'package:chat_app/presentation/screens/sign_in/widgets/sign_in_with_google.dart';
 import 'package:chat_app/presentation/widgets/custom_text_form_field.dart';
 import 'package:chat_app/presentation/widgets/dialog_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
 
 import '../../../widgets/custom_eleveted_button.dart';
 
@@ -124,21 +126,26 @@ class _SignInFormState extends State<SignInForm> {
               ),
             ),
           ),
-          Flexible(
-            child: CustomElevetedButton(
-                buttonText: googleText,
-                leadingIcon: SvgPicture.asset(googleIcon),
-                onPressed: () {
-                  signInWithGoogle().then((result) {
-                    print("result: $result");
-                    if (result != null) {
-                      Navigator.of(context).pushNamed(homeScreen);
-                    }
-                  });
-                },
-                backgroundColor: kColorWhite,
-                textStyle:
-                    PrimaryFont.regular(14).copyWith(color: kColorBlack)),
+          BlocBuilder<UserCubit, UserState>(
+            builder: (context, state) {
+              return Flexible(
+                child: CustomElevetedButton(
+                    buttonText: googleText,
+                    leadingIcon: SvgPicture.asset(googleIcon),
+                    onPressed: () {
+                      signInWithGoogle().then((result) {
+                        print("result: $result");
+                        context.read<UserCubit>().initializeUser();
+                        if (result != null) {
+                          Navigator.of(context).pushNamed(homeScreen);
+                        }
+                      });
+                    },
+                    backgroundColor: kColorWhite,
+                    textStyle:
+                        PrimaryFont.regular(14).copyWith(color: kColorBlack)),
+              );
+            },
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,

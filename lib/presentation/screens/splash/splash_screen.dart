@@ -1,6 +1,8 @@
+
 import 'package:chat_app/core/configs/app_router.dart';
 import 'package:chat_app/presentation/screens/sign_in/widgets/sign_in_with_google.dart';
 import 'package:flutter/widgets.dart';
+
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});

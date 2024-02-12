@@ -1,5 +1,4 @@
 import 'package:chat_app/presentation/screens/call/call_screen.dart';
-import 'package:chat_app/presentation/screens/empty/empty_screen.dart';
 import 'package:chat_app/presentation/screens/screen.dart';
 import 'package:chat_app/presentation/screens/setting/setting_screen.dart';
 import 'package:chat_app/presentation/screens/splash/splash_screen.dart';

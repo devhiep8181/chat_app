@@ -9,10 +9,10 @@ class UserEntity {
   String? email;
   String? photoURL;
   UserEntity({
-    required this.uid,
-    required this.displayName,
-    required this.email,
-    required this.photoURL,
+    this.uid,
+    this.displayName,
+    this.email,
+    this.photoURL,
   });
 
   static void setUser(User? user) {
@@ -22,7 +22,7 @@ class UserEntity {
   static User? getUser() {
     return _user;
   }
-  
+
   Map<String, dynamic> toMap() {
     return {
       'uid': uid,
@@ -41,7 +41,18 @@ class UserEntity {
     );
   }
 
+  factory UserEntity.fromLocalDataSource(String source) {
+    Map<String, dynamic> map = json.decode(source);
+    return UserEntity(
+      uid: map['uid'],
+      displayName: map['displayName'],
+      email: map['email'],
+      photoURL: map['photoURL'],
+    );
+  }
+
   String toJson() => json.encode(toMap());
 
-  factory UserEntity.fromJson(String source) => UserEntity.fromMap(json.decode(source));
+  factory UserEntity.fromJson(String source) =>
+      UserEntity.fromMap(json.decode(source));
 }
