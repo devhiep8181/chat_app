@@ -1,5 +1,5 @@
 import 'package:chat_app/core/configs/app_cache.dart';
-import 'package:chat_app/domain/entites/user_entity.dart';
+import 'package:chat_app/domain/entites/user/user_entity.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -17,12 +17,13 @@ Future<User?> signInWithGoogle() async {
       await FirebaseAuth.instance.signInWithCredential(credential);
 
   final User? user = authResult.user;
+
   UserEntity userEntity = UserEntity(
       uid: user!.uid,
       displayName: user.displayName,
       email: user.email,
       photoURL: user.photoURL);
-  print("User Entity: $userEntity");
+  print("ChatUser Entity: $userEntity");
   await saveUserToSharedPreferences(userEntity);
   print('signInWithGoogle succeeded: $user');
   return user;
@@ -31,5 +32,5 @@ Future<User?> signInWithGoogle() async {
 Future<void> signOutGoogle() async {
   await googleSignIn.signOut();
 
-  print("User Signed Out");
+  print("ChatUser Signed Out");
 }

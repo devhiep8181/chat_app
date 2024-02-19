@@ -1,4 +1,3 @@
-
 import 'package:chat_app/presentation/screens/home/widget/friend_list.dart';
 import 'package:chat_app/presentation/widgets/avatar_widget.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +21,8 @@ class ChatList extends StatelessWidget {
             child: Text(chatText,
                 style: PrimaryFont.medium(18).copyWith(color: kColorWhite)),
           ),
-          Flexible(
+          Expanded(
+            
             child: _buildListItem(),
           )
         ],
@@ -37,9 +37,17 @@ class ChatList extends StatelessWidget {
         itemCount: userList.length,
         itemBuilder: (context, index) {
           return ListTile(
-            leading: AvatarWidget(backgroundImage: NetworkImage(userList[index].avatar ?? ""),),
-            title: Text(userList[index].text ?? "", style: PrimaryFont.medium(14).copyWith(color: kColorWhite),),
-            subtitle: Text(userList[index].text ?? "", style: PrimaryFont.medium(14).copyWith(color: kColorWhite),),
+            leading: AvatarWidget(
+              backgroundImage: NetworkImage(userList[index].avatar ?? ""),
+            ),
+            title: Text(
+              userList[index].text ?? "",
+              style: PrimaryFont.medium(14).copyWith(color: kColorWhite),
+            ),
+            subtitle: Text(
+              userList[index].text ?? "",
+              style: PrimaryFont.medium(14).copyWith(color: kColorWhite),
+            ),
           );
         });
   }

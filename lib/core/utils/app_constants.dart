@@ -21,3 +21,7 @@ const String emptyText = "Empty";
 //! Icons
 
 const String googleIcon = "assets/icons/google_icon.svg";
+
+// !Image
+
+const String imageSample = 'https://www.woolha.com/media/2020/03/eevee.png';

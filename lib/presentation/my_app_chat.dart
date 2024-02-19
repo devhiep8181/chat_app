@@ -1,4 +1,8 @@
+
+import 'package:chat_app/presentation/bloc/blocs.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../injection_container.dart' as di; //Dependency injector
 
 import '../core/configs/app_router.dart';
 
@@ -7,8 +11,14 @@ class MyAppChat extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      onGenerateRoute: AppRouter.customRouteGenerator,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (_) => UserCubit()),
+        BlocProvider(create: (_) => di.sl<ChatUserBloc>())
+      ],
+      child: const MaterialApp(
+        onGenerateRoute: AppRouter.customRouteGenerator,
+      ),
     );
   }
 }

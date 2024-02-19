@@ -1,7 +1,9 @@
 import 'package:chat_app/core/utils/utils.dart';
+import 'package:chat_app/presentation/bloc/blocs.dart';
 import 'package:chat_app/presentation/widgets/avatar_widget.dart';
 import 'package:chat_app/presentation/widgets/custom_decorated_container.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class UserModel {
   String? name;
@@ -94,8 +96,19 @@ List<UserModel> userList = [
       text: "Toi khong di choi duoc roi"),
 ];
 
-class FriendList extends StatelessWidget {
+class FriendList extends StatefulWidget {
   const FriendList({super.key});
+
+  @override
+  State<FriendList> createState() => _FriendListState();
+}
+
+class _FriendListState extends State<FriendList> {
+  @override
+  void initState() {
+    super.initState();
+    context.read<ChatUserBloc>().add(GetListChatUser());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -111,38 +124,52 @@ class FriendList extends StatelessWidget {
             child: Text(friendsText,
                 style: PrimaryFont.medium(18).copyWith(color: kColorWhite)),
           ),
-          Flexible(
-            child: _buildListItem(),
-          )
+          Expanded(child: _buildListItem())
         ],
       ),
     );
   }
 
   Widget _buildListItem() {
-    return ListView.builder(
-        shrinkWrap: true,
-        scrollDirection: Axis.horizontal,
-        itemCount: userList.length,
-        itemBuilder: (context, index) {
-          return Padding(
-            padding: const EdgeInsets.only(right: 16),
-            child: Column(
-              children: [
-                AvatarWidget(
-                  colorRoundThird: kColorRoyalPurple,
-                  radiusRoundThird: 30,
-                  radiusRoundSecond: 26,
-                  radiusRoundFirst: 22,
-                  backgroundImage: NetworkImage(userList[index].avatar ?? ""),
+    return BlocBuilder<ChatUserBloc, ChatUserState>(
+        builder: (BuildContext context, ChatUserState state) {
+      print('calllllllUserbloc');
+      print('stateUserBLoc: $state');
+      if (state is ChatUserLoadingState) {
+        print('state loading');
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      } else if (state is ChatUserLoadedState) {
+        print('state loaded');
+        return ListView.builder(
+            // shrinkWrap: true,
+            scrollDirection: Axis.horizontal,
+            itemCount: state.listChatUser.length,
+            itemBuilder: (context, index) {
+              return Padding(
+                padding: const EdgeInsets.only(right: 16),
+                child: Column(
+                  children: [
+                    const AvatarWidget(
+                      colorRoundThird: kColorRoyalPurple,
+                      radiusRoundThird: 30,
+                      radiusRoundSecond: 26,
+                      radiusRoundFirst: 22,
+                      backgroundImage: NetworkImage(imageSample),
+                    ),
+                    Text(
+                      state.listChatUser[index].name,
+                      style:
+                          PrimaryFont.medium(14).copyWith(color: kColorWhite),
+                    ),
+                  ],
                 ),
-                Text(
-                  userList[index].name ?? "",
-                  style: PrimaryFont.medium(14).copyWith(color: kColorWhite),
-                ),
-              ],
-            ),
-          );
-        });
+              );
+            });
+      } else {
+        return const Center(child: Text('Có lỗi xảy ra vui lòng thử lại'));
+      }
+    });
   }
 }
